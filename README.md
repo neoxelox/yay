@@ -22,4 +22,13 @@ TODO: Finish setup section
 
 TODO: Finish usage section
 
+# Directory structure
+
+```
+.
+├── examples
+├── mod
+└── std
+```
+
 ## TODO: Finish readme

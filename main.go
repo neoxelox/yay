@@ -8,10 +8,12 @@ import (
 )
 
 func main() {
-	if err := cli.Root(root,
-		cli.Tree(help),
-		cli.Tree(version),
-		cli.Tree(run),
+	if err := cli.Root(rootCmd,
+		cli.Tree(helpCmd),
+		cli.Tree(versionCmd),
+		cli.Tree(runCmd),
+		cli.Tree(buildCmd),
+		cli.Tree(transpileCmd),
 	).Run(os.Args[1:]); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
