@@ -22,6 +22,10 @@ TODO: Finish setup section
 
 TODO: Finish usage section
 
+## Customize
+
+TODO: Finish customize section
+
 # Directory structure
 
 ```
@@ -32,3 +36,11 @@ TODO: Finish usage section
 ```
 
 ## TODO: Finish readme
+
+## Contribute
+
+Feel free to contribute to this project : ) .
+
+## License
+
+This project is licensed under the [MIT License](https://opensource.org/licenses/MIT) - read the [LICENSE](LICENSE) file for details.
