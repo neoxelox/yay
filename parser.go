@@ -110,6 +110,8 @@ func parse(program string, filepath string) ([]mod.Token, error) {
 				return nil, fmt.Errorf("string not closed at %s:%d:%d", filepath, row+1, col)
 			}
 
+			// TODO: check if runes[fcur-1] is \ so ignore this "
+
 			literal = runes[cur : fCur+1]
 			col += fCur - cur
 			cur = fCur

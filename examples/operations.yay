@@ -1,7 +1,7 @@
 # This example shows the diferrent available
 # operators and how they work with any type
 
-10 21 + print
-21 10 - print
-2 3 * print
-6 2 / print
+10 21 + println
+21 10 - println
+2 3 * println
+6 2 / println
