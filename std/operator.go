@@ -23,8 +23,8 @@ func (self *Add) Parse(literal string, file string, row int, col int) (mod.Token
 func (self *Add) Transpile(token mod.Token) ([]string, string, string, error) {
 	// TODO: Typeless Add
 	return nil, "", `
-	aInt = pop(&stack).(int)
-	bInt = pop(&stack).(int)
+	aInt = pop(&stack).(int64)
+	bInt = pop(&stack).(int64)
 	push(&stack, aInt + bInt)
 	`, nil
 }
@@ -50,8 +50,8 @@ func (self *Sub) Parse(literal string, file string, row int, col int) (mod.Token
 func (self *Sub) Transpile(token mod.Token) ([]string, string, string, error) {
 	// TODO: Typeless Sub
 	return nil, "", `
-	aInt = pop(&stack).(int)
-	bInt = pop(&stack).(int)
+	aInt = pop(&stack).(int64)
+	bInt = pop(&stack).(int64)
 	push(&stack, bInt - aInt)
 	`, nil
 }
@@ -77,8 +77,8 @@ func (self *Mul) Parse(literal string, file string, row int, col int) (mod.Token
 func (self *Mul) Transpile(token mod.Token) ([]string, string, string, error) {
 	// TODO: Typeless Mul
 	return nil, "", `
-	aInt = pop(&stack).(int)
-	bInt = pop(&stack).(int)
+	aInt = pop(&stack).(int64)
+	bInt = pop(&stack).(int64)
 	push(&stack, aInt * bInt)
 	`, nil
 }
@@ -104,8 +104,8 @@ func (self *Div) Parse(literal string, file string, row int, col int) (mod.Token
 func (self *Div) Transpile(token mod.Token) ([]string, string, string, error) {
 	// TODO: Typeless Div
 	return nil, "", `
-	aInt = pop(&stack).(int)
-	bInt = pop(&stack).(int)
+	aInt = pop(&stack).(int64)
+	bInt = pop(&stack).(int64)
 	push(&stack, bInt / aInt)
 	`, nil
 }

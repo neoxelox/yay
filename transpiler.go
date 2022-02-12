@@ -20,7 +20,9 @@ func transpile(program []mod.Token, filepath string) (string, error) {
 	for _, token := range program {
 		switch token.Type {
 		case mod.TypeNumber:
-			statements = append(statements, fmt.Sprintf(`push(&stack, %s)`, token.Literal))
+			statements = append(statements, fmt.Sprintf(`push(&stack, int64(%s))`, token.Literal))
+		case mod.TypeString:
+			statements = append(statements, fmt.Sprintf(`push(&stack, "%s")`, token.Literal))
 		case mod.TypeIdentifier:
 			iImports, iDefinitions, iStatements, err := Identifiers[token.Literal].Transpile(token)
 			if err != nil {

@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"strconv"
+	"strings"
 	"unicode"
 
 	"github.com/neoxelox/yay/mod"
@@ -20,6 +21,10 @@ func isNumber(literal string) bool {
 	return false
 }
 
+func isString(literal string) bool {
+	return literal[0] == mod.LiteralString && literal[len(literal)-1] == mod.LiteralString
+}
+
 func isIdentifier(literal string) bool {
 	if _, ok := Identifiers[literal]; ok {
 		return true
@@ -29,7 +34,7 @@ func isIdentifier(literal string) bool {
 }
 
 func isComment(literal string) bool {
-	return literal == mod.LiteralComment
+	return literal == string(mod.LiteralComment)
 }
 
 func searchRune(r rune, runes []rune, start int) int {
@@ -65,6 +70,14 @@ func parse(program string, filepath string) ([]mod.Token, error) {
 						Row:     row,
 						Col:     aCol,
 					})
+				case isString(aLiteral):
+					tokens = append(tokens, mod.Token{
+						Type:    mod.TypeString,
+						Literal: strings.Trim(aLiteral, string(mod.LiteralString)),
+						File:    filepath,
+						Row:     row,
+						Col:     aCol,
+					})
 				case isIdentifier(aLiteral):
 					token, err := Identifiers[aLiteral].Parse(aLiteral, filepath, row, aCol)
 					if err != nil {
@@ -90,6 +103,20 @@ func parse(program string, filepath string) ([]mod.Token, error) {
 			row++
 			col = 0
 			cur = searchRune('\n', runes, cur+1)
+		} else if isString(string(runes[cur])) {
+			fCur := searchRune(mod.LiteralString, runes, cur+1)
+
+			if fCur == -1 {
+				return nil, fmt.Errorf("string not closed at %s:%d:%d", filepath, row+1, col)
+			}
+
+			literal = runes[cur : fCur+1]
+			col += fCur - cur
+			cur = fCur
+
+			if runes[fCur+1] == mod.LiteralString {
+				return nil, fmt.Errorf("invalid string at %s:%d:%d", filepath, row+1, col+1)
+			}
 		}
 	}
 

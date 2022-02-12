@@ -2,12 +2,16 @@ package mod
 
 const Version = "v0.0.1"
 
-const LiteralComment = "#"
+const (
+	LiteralString  = '"'
+	LiteralComment = '#'
+)
 
 type Type string
 
 const (
 	TypeNumber     = Type("NUMBER")
+	TypeString     = Type("STRING")
 	TypeIdentifier = Type("IDENTIFIER")
 	TypeComment    = Type("COMMENT")
 )
@@ -33,6 +37,7 @@ type TranspileData struct {
 	Statements  []string
 }
 
+// TODO: Automatically remove unused code
 const TranspileBase = `// Generated automatically by YAY {{.Version}}
 package main
 
@@ -65,10 +70,18 @@ func main() {
 	unused(a)
 	var b interface{}
 	unused(b)
-	var aInt int
+	var aInt int64
 	unused(aInt)
-	var bInt int
+	var bInt int64
 	unused(bInt)
+	var aFloat float64
+	unused(aFloat)
+	var bFloat float64
+	unused(bFloat)
+	var aString string
+	unused(aString)
+	var bString string
+	unused(bString)
 
 	{{range .Statements}}
 	{{. -}}
