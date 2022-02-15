@@ -98,7 +98,7 @@ var runCmd = &cli.Command{
 
 		start = time.Now()
 
-		outputProgram, err := transpile(tokens, args.InputFile)
+		outputProgram, err := transpile(tokens, args.InputFile, false)
 		if err != nil {
 			exit(ctx, err)
 		}
@@ -182,7 +182,7 @@ var buildCmd = &cli.Command{
 
 		start = time.Now()
 
-		outputProgram, err := transpile(tokens, args.InputFile)
+		outputProgram, err := transpile(tokens, args.InputFile, false)
 		if err != nil {
 			exit(ctx, err)
 		}
@@ -234,6 +234,7 @@ type transpileArgs struct {
 	cli.Helper
 	InputFile  string `cli:"*input" usage:"path of the yay program to transpile"`
 	OutputFile string `cli:"output" usage:"path of the transpiled program"`
+	Comments   bool   `cli:"comments" usage:"include comments in the transpiled program"`
 }
 
 var transpileCmd = &cli.Command{
@@ -266,7 +267,7 @@ var transpileCmd = &cli.Command{
 
 		start = time.Now()
 
-		outputProgram, err := transpile(tokens, args.InputFile)
+		outputProgram, err := transpile(tokens, args.InputFile, args.Comments)
 		if err != nil {
 			exit(ctx, err)
 		}

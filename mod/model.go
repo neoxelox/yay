@@ -59,6 +59,17 @@ func pop(stack *[]interface{}) interface{} {
 	return value
 }
 
+func peek(stack *[]interface{}) interface{} {
+	return (*stack)[len(*stack)-1]
+}
+
+func btoi(value bool) int64 {
+    if value {
+        return 1
+    }
+    return 0
+}
+
 {{range .Definitions}}
 {{. -}}
 {{- end}}

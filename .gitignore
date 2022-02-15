@@ -6,6 +6,7 @@
 *.tmPreferences.cache
 *.stTheme.cache
 *.sublime-workspace
+examples/*.go
 
 # Binaries for programs and plugins
 *.exe

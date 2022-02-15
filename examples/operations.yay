@@ -1,7 +1,19 @@
-# This example shows the diferrent available
+# This example shows the diferent available
 # operators and how they work with any type
 
-"10 + 21 = " print 10 21 + println
-"21 - 10 = " print 21 10 - println
-"2 * 3 = "   print 2 3 * println
-"6 / 2 = "   print 6 2 / println
+"10 + 21:  "    print 10 21 +    println
+"21 - 10:  "    print 21 10 -    println
+"2 * 3:    "    print 2 3 *      println
+"6 / 2:    "    print 6 2 /      println
+"19 % 17:  "    print 19 17 %    println
+"2 ** 3:   "    print 2 3 **     println
+"8 = 8:    "    print 8 8 =      println
+"5 < 8:    "    print 5 8 <      println
+"8 > 5:    "    print 8 5 >      println
+"5 =< 8:   "    print 5 8 <=     println
+"8 >= 8:   "    print 8 8 >=     println
+"!(8 = 8): "    print 8 8 = !    println
+"1 & 0:    "    print 1 0 &      println
+"1 | 0:    "    print 1 0 |      println
+"1 ^ 1:    "    print 1 1 ^      println
+"~1:       "    print 1 ~        println

@@ -8,7 +8,7 @@ import (
 	"github.com/neoxelox/yay/mod"
 )
 
-func transpile(program []mod.Token, filepath string) (string, error) {
+func transpile(program []mod.Token, filepath string, comments bool) (string, error) {
 	var transpilation bytes.Buffer
 	template := template.Must(template.New("").Parse(mod.TranspileBase))
 
@@ -17,12 +17,21 @@ func transpile(program []mod.Token, filepath string) (string, error) {
 	var statements []string
 	importSet := make(map[string]struct{})
 
+	err := beginTranspile()
+	if err != nil {
+		return "", err
+	}
+
 	for _, token := range program {
 		switch token.Type {
 		case mod.TypeNumber:
 			statements = append(statements, fmt.Sprintf(`push(&stack, int64(%s))`, token.Literal))
 		case mod.TypeString:
 			statements = append(statements, fmt.Sprintf(`push(&stack, "%s")`, token.Literal))
+		case mod.TypeComment:
+			if comments {
+				statements = append(statements, fmt.Sprintf(`//%s%c`, token.Literal, '\n'))
+			}
 		case mod.TypeIdentifier:
 			iImports, iDefinitions, iStatements, err := Identifiers[token.Literal].Transpile(token)
 			if err != nil {
@@ -46,7 +55,12 @@ func transpile(program []mod.Token, filepath string) (string, error) {
 		imports = append(imports, imprt)
 	}
 
-	err := template.Execute(&transpilation, mod.TranspileData{
+	err = endTranspile()
+	if err != nil {
+		return "", err
+	}
+
+	err = template.Execute(&transpilation, mod.TranspileData{
 		Version:     mod.Version,
 		Imports:     imports,
 		Definitions: definitions,

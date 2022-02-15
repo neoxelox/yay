@@ -34,7 +34,7 @@ func isIdentifier(literal string) bool {
 }
 
 func isComment(literal string) bool {
-	return literal == string(mod.LiteralComment)
+	return literal[0] == mod.LiteralComment
 }
 
 func searchRune(r rune, runes []rune, start int) int {
@@ -54,6 +54,11 @@ func parse(program string, filepath string) ([]mod.Token, error) {
 	var col int
 	runes := []rune(program)
 	runes = append(runes, '\n') // Always have at least one end of line
+
+	err := beginParse()
+	if err != nil {
+		return nil, err
+	}
 
 	for cur := 0; cur < len(runes); cur++ {
 		if unicode.IsSpace(runes[cur]) || isComment(string(runes[cur])) {
@@ -78,10 +83,18 @@ func parse(program string, filepath string) ([]mod.Token, error) {
 						Row:     row,
 						Col:     aCol,
 					})
+				case isComment(aLiteral):
+					tokens = append(tokens, mod.Token{
+						Type:    mod.TypeComment,
+						Literal: strings.TrimLeft(aLiteral, string(mod.LiteralComment)),
+						File:    filepath,
+						Row:     row,
+						Col:     aCol,
+					})
 				case isIdentifier(aLiteral):
 					token, err := Identifiers[aLiteral].Parse(aLiteral, filepath, row, aCol)
 					if err != nil {
-						return nil, fmt.Errorf("cannot parse identifier '%s' at %s:%d:%d", aLiteral, filepath, row+1, aCol+1)
+						return nil, err
 					}
 					tokens = append(tokens, token)
 				default:
@@ -100,9 +113,11 @@ func parse(program string, filepath string) ([]mod.Token, error) {
 			row++
 			col = 0
 		} else if isComment(string(runes[cur])) {
-			row++
-			col = 0
-			cur = searchRune('\n', runes, cur+1)
+			fCur := searchRune('\n', runes, cur+1) - 1
+
+			literal = runes[cur : fCur+1]
+			col += fCur - cur
+			cur = fCur
 		} else if isString(string(runes[cur])) {
 			fCur := searchRune(mod.LiteralString, runes, cur+1)
 
@@ -120,6 +135,11 @@ func parse(program string, filepath string) ([]mod.Token, error) {
 				return nil, fmt.Errorf("invalid string at %s:%d:%d", filepath, row+1, col+1)
 			}
 		}
+	}
+
+	err = endParse()
+	if err != nil {
+		return nil, err
 	}
 
 	return tokens, nil

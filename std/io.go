@@ -5,6 +5,7 @@ import "github.com/neoxelox/yay/mod"
 type Print struct{}
 
 const LiteralPrint = "print"
+const IdentifierPrint = "print"
 
 func (self *Print) Parse(literal string, file string, row int, col int) (mod.Token, error) {
 	return mod.Token{
@@ -14,7 +15,7 @@ func (self *Print) Parse(literal string, file string, row int, col int) (mod.Tok
 		Row:     row,
 		Col:     col,
 		Meta: map[string]string{
-			"name":    "print",
+			"name":    IdentifierPrint,
 			"package": "std",
 		},
 	}, nil
@@ -22,13 +23,14 @@ func (self *Print) Parse(literal string, file string, row int, col int) (mod.Tok
 
 func (self *Print) Transpile(token mod.Token) ([]string, string, string, error) {
 	return []string{"fmt"}, "", `
-	fmt.Print(pop(&stack))
+	fmt.Print(peek(&stack))
 	`, nil
 }
 
 type Println struct{}
 
 const LiteralPrintln = "println"
+const IdentifierPrintln = "println"
 
 func (self *Println) Parse(literal string, file string, row int, col int) (mod.Token, error) {
 	return mod.Token{
@@ -38,7 +40,7 @@ func (self *Println) Parse(literal string, file string, row int, col int) (mod.T
 		Row:     row,
 		Col:     col,
 		Meta: map[string]string{
-			"name":    "println",
+			"name":    IdentifierPrintln,
 			"package": "std",
 		},
 	}, nil
@@ -46,6 +48,6 @@ func (self *Println) Parse(literal string, file string, row int, col int) (mod.T
 
 func (self *Println) Transpile(token mod.Token) ([]string, string, string, error) {
 	return []string{"fmt"}, "", `
-	fmt.Println(pop(&stack))
+	fmt.Println(peek(&stack))
 	`, nil
 }
