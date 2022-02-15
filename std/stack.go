@@ -27,4 +27,28 @@ func (self *Drop) Transpile(token mod.Token) ([]string, string, string, error) {
 	`, nil
 }
 
-// TODO: dup identifier
+type Dup struct{}
+
+const LiteralDup = "dup"
+const IdentifierDup = "dup"
+
+func (self *Dup) Parse(literal string, file string, row int, col int) (mod.Token, error) {
+	return mod.Token{
+		Type:    mod.TypeIdentifier,
+		Literal: literal,
+		File:    file,
+		Row:     row,
+		Col:     col,
+		Meta: map[string]string{
+			"name":    IdentifierDup,
+			"package": "std",
+		},
+	}, nil
+}
+
+func (self *Dup) Transpile(token mod.Token) ([]string, string, string, error) {
+	return nil, "", `
+	a = peek(&stack)
+	push(&stack, a)
+	`, nil
+}

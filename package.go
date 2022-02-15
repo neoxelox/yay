@@ -9,6 +9,7 @@ import (
 
 var Identifiers = map[string]mod.Identifier{
 	std.LiteralDrop: &std.Drop{},
+	std.LiteralDup:  &std.Dup{},
 
 	std.LiteralAdd: &std.Add{},
 	std.LiteralSub: &std.Sub{},

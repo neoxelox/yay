@@ -23,7 +23,7 @@ func (self *Print) Parse(literal string, file string, row int, col int) (mod.Tok
 
 func (self *Print) Transpile(token mod.Token) ([]string, string, string, error) {
 	return []string{"fmt"}, "", `
-	fmt.Print(peek(&stack))
+	fmt.Print(pop(&stack))
 	`, nil
 }
 
@@ -48,6 +48,6 @@ func (self *Println) Parse(literal string, file string, row int, col int) (mod.T
 
 func (self *Println) Transpile(token mod.Token) ([]string, string, string, error) {
 	return []string{"fmt"}, "", `
-	fmt.Println(peek(&stack))
+	fmt.Println(pop(&stack))
 	`, nil
 }

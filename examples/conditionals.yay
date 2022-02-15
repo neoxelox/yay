@@ -26,10 +26,10 @@ end
 
 # Here starts the debug
 
-23 3 * 81 = if
+23 3 * dup 81 = if
     "Something is wrong" println
-else 23 3 * 69 = if
+else 69 = if
         "Something is right" println
-        "Btw we should have a dup keyword" println
+        "Btw nice dup keyword" println
     end
 end

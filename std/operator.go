@@ -142,6 +142,7 @@ func (self *Mod) Transpile(token mod.Token) ([]string, string, string, error) {
 	`, nil
 }
 
+// Maybe do not include this as an operator
 type Exp struct{}
 
 const LiteralExp = "**"
