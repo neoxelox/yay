@@ -25,9 +25,9 @@ func transpile(program []mod.Token, filepath string, comments bool) (string, err
 	for _, token := range program {
 		switch token.Type {
 		case mod.TypeNumber:
-			statements = append(statements, fmt.Sprintf(`push(&stack, int64(%s))`, token.Literal))
+			statements = append(statements, fmt.Sprintf(`push(int64(%s))`, token.Literal))
 		case mod.TypeString:
-			statements = append(statements, fmt.Sprintf(`push(&stack, "%s")`, token.Literal))
+			statements = append(statements, fmt.Sprintf(`push("%s")`, token.Literal))
 		case mod.TypeComment:
 			if comments {
 				statements = append(statements, fmt.Sprintf(`//%s%c`, token.Literal, '\n'))

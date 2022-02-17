@@ -47,20 +47,30 @@ import (
 	{{- end}}
 )
 
-func unused(variable interface{}) {}
+var (
+	stack []interface{}
+	a interface{}
+	b interface{}
+	aInt int64
+	bInt int64
+	aFloat float64
+	bFloat float64
+	aString string
+	bString string
+)
 
-func push(stack *[]interface{}, value interface{}) {
-	*stack = append(*stack, value)
+func push(value interface{}) {
+	stack = append(stack, value)
 }
 
-func pop(stack *[]interface{}) interface{} {
-	value := (*stack)[len(*stack)-1]
-	*stack = (*stack)[:len(*stack)-1]
+func pop() interface{} {
+	value := stack[len(stack)-1]
+	stack = stack[:len(stack)-1]
 	return value
 }
 
-func peek(stack *[]interface{}) interface{} {
-	return (*stack)[len(*stack)-1]
+func peek() interface{} {
+	return stack[len(stack)-1]
 }
 
 func btoi(value bool) int64 {
@@ -75,26 +85,7 @@ func btoi(value bool) int64 {
 {{- end}}
 
 func main() {
-	var stack []interface{}
-	unused(stack)
-	var a interface{}
-	unused(a)
-	var b interface{}
-	unused(b)
-	var aInt int64
-	unused(aInt)
-	var bInt int64
-	unused(bInt)
-	var aFloat float64
-	unused(aFloat)
-	var bFloat float64
-	unused(bFloat)
-	var aString string
-	unused(aString)
-	var bString string
-	unused(bString)
-
-	{{range .Statements}}
+	{{- range .Statements}}
 	{{. -}}
 	{{- end -}}
 }

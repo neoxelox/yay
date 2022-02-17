@@ -27,6 +27,8 @@ var Identifiers = map[string]mod.Identifier{
 	std.LiteralOr:  &std.Or{},
 	std.LiteralXor: &std.Xor{},
 	std.LiteralNeg: &std.Neg{},
+	std.LiteralLsh: &std.Lsh{},
+	std.LiteralRsh: &std.Rsh{},
 
 	std.LiteralIf:   &std.If{},
 	std.LiteralElse: &std.Else{},

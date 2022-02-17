@@ -23,7 +23,7 @@ func (self *Drop) Parse(literal string, file string, row int, col int) (mod.Toke
 
 func (self *Drop) Transpile(token mod.Token) ([]string, string, string, error) {
 	return nil, "", `
-	pop(&stack)
+	pop()
 	`, nil
 }
 
@@ -48,7 +48,8 @@ func (self *Dup) Parse(literal string, file string, row int, col int) (mod.Token
 
 func (self *Dup) Transpile(token mod.Token) ([]string, string, string, error) {
 	return nil, "", `
-	a = peek(&stack)
-	push(&stack, a)
+	a = pop()
+	push(a)
+	push(a)
 	`, nil
 }

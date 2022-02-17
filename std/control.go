@@ -83,7 +83,7 @@ func (self *If) Parse(literal string, file string, row int, col int) (mod.Token,
 
 func (self *If) Transpile(token mod.Token) ([]string, string, string, error) {
 	return nil, "", fmt.Sprintf(`
-	aInt = pop(&stack).(int64)
+	aInt = pop().(int64)
 	if aInt == 0 {
 		goto addr%d%d
 	}

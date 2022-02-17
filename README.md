@@ -12,6 +12,8 @@ _**Note:** this is just a simple project to learn about programming languages, t
 - **`Transpiles to Go code -> Can be compiled for a lot of platforms!`**
 - **`Highly customizable -> Even the keywords can be localized`**
 
+TODO: Explain that this language is not intended for coroutines so its not concurrency safe (Although it could be easily converted to that if asked)
+
 ## Setup
 
 It, obviously, needs golang to be installed in order to compile the transpiled code.
