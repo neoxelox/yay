@@ -21,6 +21,10 @@ func (self *End) Parse(literal string, file string, row int, col int) (mod.Token
 	block := reference[len(reference)-1]
 	reference = reference[:len(reference)-1]
 
+	if block.Meta.(map[string]string)["name"] == IdentifierWhile {
+		return mod.Token{}, fmt.Errorf("'end' does not close a control block at %s:%d:%d", file, row+1, col+1)
+	}
+
 	token := mod.Token{
 		Type:    mod.TypeIdentifier,
 		Literal: literal,
@@ -32,6 +36,18 @@ func (self *End) Parse(literal string, file string, row int, col int) (mod.Token
 			"package": "std",
 			"block":   fmt.Sprintf("addr%d%d", block.Row, block.Col),
 		},
+	}
+
+	if len(reference) > 0 {
+		if reference[len(reference)-1].Meta.(map[string]string)["name"] == IdentifierWhile {
+			if block.Meta.(map[string]string)["name"] != IdentifierIf {
+				return mod.Token{}, fmt.Errorf("'end' does not close a control block at %s:%d:%d", file, row+1, col+1)
+			}
+
+			blockW := reference[len(reference)-1]
+			reference = reference[:len(reference)-1]
+			token.Meta.(map[string]string)["toBlock"] = fmt.Sprintf("addr%d%d", blockW.Row, blockW.Col)
+		}
 	}
 
 	return token, nil
@@ -48,9 +64,17 @@ func (self *End) EndParse() error {
 
 func (self *End) Transpile(token mod.Token) ([]string, string, string, error) {
 	block, ok := token.Meta.(map[string]string)["block"]
-
 	if !ok {
 		return nil, "", "", fmt.Errorf("'end' does not close a control block at %s:%d:%d", token.File, token.Row+1, token.Col+1)
+	}
+
+	toBlock, ok := token.Meta.(map[string]string)["toBlock"]
+	if ok {
+		return nil, "", fmt.Sprintf(`
+	goto %s
+
+%s:
+	`, toBlock, block), nil
 	}
 
 	return nil, "", fmt.Sprintf(`
@@ -104,6 +128,7 @@ func (self *Else) Parse(literal string, file string, row int, col int) (mod.Toke
 	reference = reference[:len(reference)-1]
 
 	// TODO: Allow elif or {} if ... else {} if ... else ... end
+	// TODO: Allow while {} if ... else {} end ?
 
 	if block.Meta.(map[string]string)["name"] != IdentifierIf {
 		return mod.Token{}, fmt.Errorf("'else' does not extend an 'if' block at %s:%d:%d", file, row+1, col+1)
@@ -129,7 +154,6 @@ func (self *Else) Parse(literal string, file string, row int, col int) (mod.Toke
 
 func (self *Else) Transpile(token mod.Token) ([]string, string, string, error) {
 	block, ok := token.Meta.(map[string]string)["block"]
-
 	if !ok {
 		return nil, "", "", fmt.Errorf("'else' does not extend an 'if' block at %s:%d:%d", token.File, token.Row+1, token.Col+1)
 	}
@@ -139,4 +163,33 @@ func (self *Else) Transpile(token mod.Token) ([]string, string, string, error) {
 
 %s:
 	`, token.Row, token.Col, block), nil
+}
+
+type While struct{}
+
+const LiteralWhile = "while"
+const IdentifierWhile = "while"
+
+func (self *While) Parse(literal string, file string, row int, col int) (mod.Token, error) {
+	token := mod.Token{
+		Type:    mod.TypeIdentifier,
+		Literal: literal,
+		File:    file,
+		Row:     row,
+		Col:     col,
+		Meta: map[string]string{
+			"name":    IdentifierWhile,
+			"package": "std",
+		},
+	}
+
+	reference = append(reference, token)
+
+	return token, nil
+}
+
+func (self *While) Transpile(token mod.Token) ([]string, string, string, error) {
+	return nil, "", fmt.Sprintf(`
+addr%d%d:
+	`, token.Row, token.Col), nil
 }

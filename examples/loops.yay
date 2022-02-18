@@ -1,0 +1,15 @@
+# This example shows the loop statements
+
+0 while dup 5 < if
+    "This is iteration " print dup println
+    1 +
+end drop
+
+10 "you?" "are" 7 6 5 "how" "Hi" 2 1
+
+"[ " print
+len while dup 0 > if
+   swap print " " print
+   1 -
+end drop
+"]" println

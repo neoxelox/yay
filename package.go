@@ -10,6 +10,8 @@ import (
 var Identifiers = map[string]mod.Identifier{
 	std.LiteralDrop: &std.Drop{},
 	std.LiteralDup:  &std.Dup{},
+	std.LiteralSwap: &std.Swap{},
+	std.LiteralLen:  &std.Len{},
 
 	std.LiteralAdd: &std.Add{},
 	std.LiteralSub: &std.Sub{},
@@ -30,9 +32,10 @@ var Identifiers = map[string]mod.Identifier{
 	std.LiteralLsh: &std.Lsh{},
 	std.LiteralRsh: &std.Rsh{},
 
-	std.LiteralIf:   &std.If{},
-	std.LiteralElse: &std.Else{},
-	std.LiteralEnd:  &std.End{},
+	std.LiteralIf:    &std.If{},
+	std.LiteralElse:  &std.Else{},
+	std.LiteralWhile: &std.While{},
+	std.LiteralEnd:   &std.End{},
 
 	std.LiteralPrint:   &std.Print{},
 	std.LiteralPrintln: &std.Println{},

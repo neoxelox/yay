@@ -53,3 +53,56 @@ func (self *Dup) Transpile(token mod.Token) ([]string, string, string, error) {
 	push(a)
 	`, nil
 }
+
+type Swap struct{}
+
+const LiteralSwap = "swap"
+const IdentifierSwap = "swap"
+
+func (self *Swap) Parse(literal string, file string, row int, col int) (mod.Token, error) {
+	return mod.Token{
+		Type:    mod.TypeIdentifier,
+		Literal: literal,
+		File:    file,
+		Row:     row,
+		Col:     col,
+		Meta: map[string]string{
+			"name":    IdentifierSwap,
+			"package": "std",
+		},
+	}, nil
+}
+
+func (self *Swap) Transpile(token mod.Token) ([]string, string, string, error) {
+	return nil, "", `
+	b = pop()
+	a = pop()
+	push(b)
+	push(a)
+	`, nil
+}
+
+type Len struct{}
+
+const LiteralLen = "len"
+const IdentifierLen = "len"
+
+func (self *Len) Parse(literal string, file string, row int, col int) (mod.Token, error) {
+	return mod.Token{
+		Type:    mod.TypeIdentifier,
+		Literal: literal,
+		File:    file,
+		Row:     row,
+		Col:     col,
+		Meta: map[string]string{
+			"name":    IdentifierLen,
+			"package": "std",
+		},
+	}, nil
+}
+
+func (self *Len) Transpile(token mod.Token) ([]string, string, string, error) {
+	return nil, "", `
+	push(int64(len(stack)))
+	`, nil
+}
